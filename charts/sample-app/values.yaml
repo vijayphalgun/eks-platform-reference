@@ -1,0 +1,39 @@
+image:
+  repository: nginxinc/nginx-unprivileged
+  tag: "1.27-alpine"
+  pullPolicy: IfNotPresent
+
+containerPort: 8080
+
+# Used only when autoscaling is disabled.
+replicaCount: 3
+
+autoscaling:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 12
+  targetCPUUtilizationPercentage: 70
+
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 2
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 64Mi
+  limits:
+    memory: 128Mi
+
+# Spread replicas across zones first, then across nodes.
+topologySpread:
+  enabled: true
+
+service:
+  type: ClusterIP
+  port: 80
+
+nodeSelector:
+  node-role: general
+
+tolerations: []

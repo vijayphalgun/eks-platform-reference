@@ -1,0 +1,8 @@
+{{ include "sample-app.fullname" . }} is deployed in namespace {{ .Release.Namespace }}.
+
+Test it locally:
+  kubectl -n {{ .Release.Namespace }} port-forward svc/{{ include "sample-app.fullname" . }} 8080:{{ .Values.service.port }}
+  then open http://localhost:8080
+
+Watch Karpenter add capacity as the HPA scales:
+  kubectl get nodes -l karpenter.sh/nodepool -w
